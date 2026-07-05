@@ -1,6 +1,7 @@
 const GROUPS = ["比劫", "食伤", "财", "官杀", "印"];
 const TEST_VERSION = "visible-v1";
-const COLLECTION_ENDPOINT = "";
+// Google Apps Script Web App URL. Keep the Sheet private; only this submit endpoint is public.
+const COLLECTION_ENDPOINT = "https://script.google.com/macros/s/AKfycbyts92FSqGMJ15m8nDnTg1UoiksP4pw17nspNXDgzq5eZfdXslutrgA_AsnmEP5qvg/exec";
 
 const mainQuestions = [
   {
@@ -594,9 +595,8 @@ function stageShell(content, actions = "") {
     <div class="app-shell">
       <header class="topbar">
         <div class="brand">
-          ${phaseMark()}
           <div>
-            <p class="brand-title">十神通道测试</p>
+            <p class="brand-title">十神用神与忌神测试</p>
             <p class="brand-subtitle">25 题完成用神组、忌神组与组内拆分</p>
           </div>
         </div>
@@ -607,28 +607,18 @@ function stageShell(content, actions = "") {
   `;
 }
 
-function phaseMark() {
-  return `
-    <svg class="brand-mark" viewBox="0 0 64 64" role="img" aria-label="五组循环标记">
-      <circle cx="32" cy="32" r="28" fill="#fffaf1" stroke="#007c7a" stroke-width="3"></circle>
-      <path d="M32 9 L39 28 L59 28 L43 40 L49 59 L32 47 L15 59 L21 40 L5 28 L25 28 Z" fill="#bd7a19" opacity="0.88"></path>
-      <circle cx="32" cy="32" r="8" fill="#1f2733"></circle>
-    </svg>
-  `;
-}
-
 function renderIntro() {
   root.innerHTML = stageShell(`
     <div class="intro-grid">
       <div class="intro-copy">
-        <h1>十神启动与忌神通道测试</h1>
+        <h1>十神用神与忌神测试</h1>
         <p>先测五组启动，再校准前三组，最后拆出具体用神和具体忌神。最终结果只展示你的用神和忌神。</p>
         <div class="privacy-strip">请仔细思考，对照自己生活中真的遇到过的事情作答。想不起来的尽量不要强加；主测题选中间表示“我平时不会关注这个”，校准和拆分题选中间表示“中立”。</div>
         <div class="intro-actions">
           <button class="primary-button" id="startBtn">开始测试</button>
           <button class="secondary-button" id="sampleBtn">快速看结果样例</button>
         </div>
-        <div class="privacy-strip">默认不上传答案。参与统计会在结果页单独询问；当前版本只保存到本机浏览器，生日与八字对比后续再接入。</div>
+        <div class="privacy-strip">默认不上传答案。参与统计会在结果页单独询问；在线表格接入前只保存到本机浏览器。接入后，表格会保存在站长私密 Google Sheet 中，公开页面不会展示原始记录。</div>
       </div>
     </div>
   `);
@@ -905,7 +895,7 @@ function renderCollectionForm(result) {
   return `
     <section class="collection-section">
       <div class="section-heading">
-        <h2>加入统计表</h2>
+        <h2>参与统计</h2>
       </div>
       <form class="collection-form" id="collectionForm">
         <label class="input-label">
@@ -937,9 +927,9 @@ function renderCollectionForm(result) {
         </label>
         <input type="hidden" name="usefulGod" value="${escapeHtml(result.usefulGod)}" />
         <input type="hidden" name="harmfulGod" value="${escapeHtml(result.harmfulGod)}" />
-        <p class="notice">提交后会写入表格：ID、生日、出生小时、用神、忌神、提交时间。出生小时不知道可以留空。</p>
+        <p class="notice">提交后会写入站长私密统计表：ID、生日、出生小时、用神、忌神、提交时间。出生小时不知道可以留空。</p>
         <div class="form-actions">
-          <button class="primary-button" type="submit">${state.collectionSubmitted ? "已提交，再次更新" : "提交到统计表"}</button>
+          <button class="primary-button" type="submit">${state.collectionSubmitted ? "已提交，再次更新" : "提交统计"}</button>
         </div>
         ${state.collectionStatus ? `<div class="toast">${state.collectionStatus}</div>` : ""}
       </form>
@@ -1005,7 +995,7 @@ async function submitCollection(result) {
   saveLocalCollection(payload);
 
   if (!COLLECTION_ENDPOINT) {
-    state.collectionStatus = "表格接口还没有配置，已先保存到本机。把 Apps Script URL 填进 COLLECTION_ENDPOINT 后，就会写入表格。";
+    state.collectionStatus = "在线统计表还没有接入，已先保存到本机。把 Apps Script URL 填进 COLLECTION_ENDPOINT 后，就会写入私密表格。";
     state.collectionSubmitted = true;
     render();
     return;
@@ -1020,7 +1010,7 @@ async function submitCollection(result) {
       },
       body: JSON.stringify(payload)
     });
-    state.collectionStatus = "已提交到统计表。";
+    state.collectionStatus = "已提交到私密统计表。";
     state.collectionSubmitted = true;
   } catch {
     state.collectionStatus = "提交失败，请稍后再试，或检查表格接口地址。";
@@ -1314,7 +1304,7 @@ function buildCopyText(result) {
   const usefulVerdict = resultVerdicts[result.usefulGod]?.useful;
   const harmfulVerdict = resultVerdicts[result.harmfulGod]?.harmful;
   return [
-    "十神通道测试结果",
+    "十神用神与忌神测试结果",
     `完成时间: ${new Date().toLocaleString("zh-CN")}`,
     `你的用神是: ${result.usefulGod}`,
     `你的忌神是: ${result.harmfulGod}`,
