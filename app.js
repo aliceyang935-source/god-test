@@ -630,7 +630,6 @@ function renderIntro() {
         </div>
         <div class="privacy-strip">默认不上传答案。参与统计会在结果页单独询问；当前版本只保存到本机浏览器，生日与八字对比后续再接入。</div>
       </div>
-      ${renderPhaseMap()}
     </div>
   `);
   document.getElementById("startBtn").addEventListener("click", () => {
@@ -643,46 +642,6 @@ function renderIntro() {
     state.page = "result";
     render();
   });
-}
-
-function renderPhaseMap() {
-  return `
-    <svg class="phase-map" viewBox="0 0 520 520" role="img" aria-label="五组生克关系图">
-      <rect x="0" y="0" width="520" height="520" rx="8" fill="#fffaf1" stroke="#ded3c3"></rect>
-      <circle cx="260" cy="260" r="154" fill="none" stroke="#007c7a" stroke-width="3" stroke-dasharray="10 10"></circle>
-      ${phaseNode(260, 72, "印", "#476fbd")}
-      ${phaseNode(438, 202, "比劫", "#007c7a")}
-      ${phaseNode(370, 410, "食伤", "#bd7a19")}
-      ${phaseNode(150, 410, "财", "#b2414d")}
-      ${phaseNode(82, 202, "官杀", "#1f2733")}
-      <path d="M288 88 C382 112 432 162 438 202" fill="none" stroke="#007c7a" stroke-width="5" marker-end="url(#arrowTeal)"></path>
-      <path d="M438 240 C430 328 402 378 370 410" fill="none" stroke="#007c7a" stroke-width="5" marker-end="url(#arrowTeal)"></path>
-      <path d="M332 426 C252 454 190 448 150 410" fill="none" stroke="#007c7a" stroke-width="5" marker-end="url(#arrowTeal)"></path>
-      <path d="M116 390 C78 312 68 250 82 202" fill="none" stroke="#007c7a" stroke-width="5" marker-end="url(#arrowTeal)"></path>
-      <path d="M102 166 C142 102 198 76 260 72" fill="none" stroke="#007c7a" stroke-width="5" marker-end="url(#arrowTeal)"></path>
-      <path d="M410 220 L168 392" stroke="#b2414d" stroke-width="4" stroke-linecap="round" opacity="0.75"></path>
-      <path d="M150 382 L250 104" stroke="#b2414d" stroke-width="4" stroke-linecap="round" opacity="0.75"></path>
-      <path d="M250 100 L366 382" stroke="#b2414d" stroke-width="4" stroke-linecap="round" opacity="0.75"></path>
-      <path d="M360 392 L98 214" stroke="#b2414d" stroke-width="4" stroke-linecap="round" opacity="0.75"></path>
-      <path d="M108 202 L404 202" stroke="#b2414d" stroke-width="4" stroke-linecap="round" opacity="0.75"></path>
-      <defs>
-        <marker id="arrowTeal" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
-          <path d="M0,0 L0,6 L6,3 z" fill="#007c7a"></path>
-        </marker>
-      </defs>
-      <text x="260" y="252" text-anchor="middle" font-size="24" font-weight="800" fill="#1f2733">生 / 克</text>
-      <text x="260" y="282" text-anchor="middle" font-size="15" fill="#68707c">启动频率与压制方式分开计算</text>
-    </svg>
-  `;
-}
-
-function phaseNode(x, y, label, color) {
-  return `
-    <g>
-      <circle cx="${x}" cy="${y}" r="44" fill="${color}"></circle>
-      <text x="${x}" y="${y + 8}" text-anchor="middle" font-size="24" font-weight="900" fill="#fff">${label}</text>
-    </g>
-  `;
 }
 
 function renderQuestion(kind) {

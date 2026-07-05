@@ -103,9 +103,9 @@ button {
 
 .intro-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+  max-width: 860px;
   gap: clamp(24px, 4vw, 52px);
-  align-items: center;
+  align-items: start;
 }
 
 .intro-copy h1,
@@ -187,16 +187,6 @@ button {
 
 .button-icon {
   margin-right: 6px;
-}
-
-.phase-map {
-  width: min(440px, 100%);
-  justify-self: center;
-  filter: drop-shadow(0 22px 28px rgba(50, 43, 32, 0.14));
-}
-
-.phase-map text {
-  font-family: inherit;
 }
 
 .privacy-strip,
@@ -670,10 +660,6 @@ summary {
   .result-hero,
   .content-grid {
     grid-template-columns: 1fr;
-  }
-
-  .phase-map {
-    max-width: 320px;
   }
 }
 
