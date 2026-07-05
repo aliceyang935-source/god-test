@@ -1,5 +1,5 @@
 const GROUPS = ["比劫", "食伤", "财", "官杀", "印"];
-const TEST_VERSION = "visible-v1";
+const TEST_VERSION = "visible-v2";
 // Google Apps Script Web App URL. Keep the Sheet private; only this submit endpoint is public.
 const COLLECTION_ENDPOINT = "https://script.google.com/macros/s/AKfycbyts92FSqGMJ15m8nDnTg1UoiksP4pw17nspNXDgzq5eZfdXslutrgA_AsnmEP5qvg/exec";
 
